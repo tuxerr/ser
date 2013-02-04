@@ -8,6 +8,8 @@ import subprocess
 import re
 import pickle
 
+global gmanager
+
 class Show():
     def __init__(self,name,path):
         self.name=name
@@ -42,20 +44,25 @@ class Show():
         if acceptable_episodes==[]:
             return False
         else:
+            print(acceptable_episodes)
             return acceptable_episodes[0].replace("~",str(self.current_season))
 
 
     def play_episode(self):
+        global gmanager
         res = self.episode_exists(self.current_episode)
         if res == False:
             print("Show ",self.name," season ",self.current_season," episode ",self.current_episode, "isn't found. Switching to next season")
             self.current_episode=1
             self.current_season+=1
+            gmanager.save_data()
             self.play_episode()
         else:
             subprocess.call(["mplayer",res])
             self.current_episode+=1
+            gmanager.save_data()
             return self.play_episode()
+
 
 class Manager():
     def __init__(self):
@@ -121,12 +128,12 @@ class Manager():
 
 
 def main():
-
+    global gmanager
     man = Manager()
+    gmanager = man
     signal.signal(signal.SIGINT, man)
     man.run()
     man.save_data()
 
 if __name__ == "__main__":
-    
     main()
