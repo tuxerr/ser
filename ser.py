@@ -39,7 +39,7 @@ class Show():
         self.goto_currentseason_dir()
         l = os.listdir(".")
         newlist = [x.replace(str(self.current_season),"~",1) for x in l]
-        acceptable_episodes = [ x for x in newlist if (re.match(".*[a-zA-Z ~]0?"+str(ep_number)+"(?![0-9]).*(mkv|avi|wmv|mp4)",x)!=None ) ]
+        acceptable_episodes = [ x for x in newlist if (re.match(".*[a-zA-Z ~]0?"+str(ep_number)+"(?![0-9]).*(mkv|avi|wmv|mp4|flv)",x)!=None ) ]
                                 
         if acceptable_episodes==[]:
             return False
